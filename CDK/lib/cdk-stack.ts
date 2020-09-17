@@ -8,6 +8,7 @@ export class CdkStack extends cdk.Stack {
     // The code that defines your stack goes here
     const vpc = new ec2.Vpc(this, "IAC-VPC", {
       cidr: "10.0.0.0/21",
+      maxAzs:1,
       natGateways:0,
       subnetConfiguration: [
         {
@@ -27,7 +28,6 @@ export class CdkStack extends cdk.Stack {
           cidrMask:24,
         }
       ]
-
-    })
+    });
   }
 }
