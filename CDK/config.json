@@ -1,7 +1,5 @@
 {
     "VPC_IP": "10.0.0.0",
     "VPC_CIDR_MASK": 16,
-    "SUBNET_CIDR_MASK": 24,
-    "PUBLIC_SN_COUNT":3,
-    "ISOLATED_SN_COUNT":3
+    "SUBNET_CIDR_MASK": 24    
 }
