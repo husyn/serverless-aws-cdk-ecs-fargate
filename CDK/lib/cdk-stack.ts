@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as ecr from '@aws-cdk/aws-ecr';
 
 import config from '../config.json';
 
@@ -50,5 +51,7 @@ export class CdkStack extends cdk.Stack {
       natGateways:0,
       subnetConfiguration: [...publicSNs, ...isolatedSNs]
     });
+
+    const ecr_repo = new ecr.Repository(this, config.project_name);
   }
 }

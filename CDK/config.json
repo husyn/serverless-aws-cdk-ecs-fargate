@@ -1,5 +1,6 @@
 {
+    "project_name": "sample-project",
     "VPC_IP": "10.0.0.0",
     "VPC_CIDR_MASK": 16,
-    "SUBNET_CIDR_MASK": 24    
+    "SUBNET_CIDR_MASK": 24
 }
