@@ -16,35 +16,35 @@ export class CdkStack extends cdk.Stack {
       {
         subnetType: ec2.SubnetType.PUBLIC,
         name: 'public1',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       },
       {
         subnetType: ec2.SubnetType.PUBLIC,
         name: 'public2',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       },
       {
         subnetType: ec2.SubnetType.PUBLIC,
         name: 'public3',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       }
     ]
-    
+
     const isolatedSNs = [
       {
         subnetType: ec2.SubnetType.ISOLATED,
         name: 'isolated1',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       },
       {
         subnetType: ec2.SubnetType.ISOLATED,
         name: 'isolated2',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       },
       {
         subnetType: ec2.SubnetType.ISOLATED,
         name: 'isolated3',
-        cidrMask:config.SUBNET_CIDR_MASK,      
+        cidrMask:config.SUBNET_CIDR_MASK,
       }
     ]
     const vpc = new ec2.Vpc(this, "IAC-VPC", {
@@ -55,16 +55,13 @@ export class CdkStack extends cdk.Stack {
     });
 
     const ecr_repo = new ecr.Repository(this, config.project_name);
-  }
 
-  const vpc = new ec2.Vpc(this, "MyVpc", {
+    const vpc = new ec2.Vpc(this, "MyVpc", {
         maxAzs: 3 // Default is all AZs in region
       });
-
       const cluster = new ecs.Cluster(this, "MyCluster", {
         vpc: vpc
       });
-
       // Create a load-balanced Fargate service and make it public
       new ecs_patterns.ApplicationLoadBalancedFargateService(this, "MyFargateService", {
         cluster: cluster, // Required
@@ -74,4 +71,5 @@ export class CdkStack extends cdk.Stack {
         memoryLimitMiB: 2048, // Default is 512
         publicLoadBalancer: true // Default is false
       });
+  }
 }
