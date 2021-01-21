@@ -67,7 +67,16 @@ export class CdkStack extends cdk.Stack {
     });
 
 
-    const ecr_repo = new ecr.Repository(this, config.PROJECT_NAME);
+    const ecr_repo = new ecr.Repository(this, config.PROJECT_NAME, {
+      repositoryName: this.get_logical_env_name('repo'),
+        lifecycleRules: [
+          {
+            maxImageCount: 10,
+            tagStatus: ecr.TagStatus.ANY,
+            description: 'lifecycle cleanup rule'
+          }
+        ]
+    });
 
     const cluster = new ecs.Cluster(this, this.get_logical_env_name('cluster'), {
       vpc: vpc,
