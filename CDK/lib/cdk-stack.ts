@@ -49,7 +49,7 @@ export class CdkStack extends cdk.Stack {
         cidrMask:config.SUBNET_CIDR_MASK,      
       }
     ]
-    const vpc = new ec2.Vpc(this, this.get_logical_prodenv_name('vpc'), {
+    const vpc = new ec2.Vpc(this, this.get_logical_env_name('vpc'), {
       cidr: [config.VPC_IP, config.VPC_CIDR_MASK].join("/"),
       maxAzs:3,
       natGateways:0,
@@ -59,7 +59,7 @@ export class CdkStack extends cdk.Stack {
     const applb = new alb.ApplicationLoadBalancer(this, 'LB', {
       vpc,
       internetFacing: true,
-      loadBalancerName: this.get_logical_prodenv_name('lb')
+      loadBalancerName: this.get_logical_env_name('lb')
     });
 
     const listener = applb.addListener('Listener', {
@@ -69,14 +69,14 @@ export class CdkStack extends cdk.Stack {
 
     const ecr_repo = new ecr.Repository(this, config.PROJECT_NAME);
 
-    const cluster = new ecs.Cluster(this, this.get_logical_prodenv_name('cluster'), {
+    const cluster = new ecs.Cluster(this, this.get_logical_env_name('cluster'), {
       vpc: vpc,
-      clusterName: this.get_logical_prodenv_name('cluster')
+      clusterName: this.get_logical_env_name('cluster')
     });
 
     
 
-    const td = new ecs.TaskDefinition(this, this.get_logical_prodenv_name('taskdefinition'), {
+    const td = new ecs.TaskDefinition(this, this.get_logical_env_name('taskdefinition'), {
       compatibility: ecs.Compatibility.FARGATE,
       cpu: '512',
       memoryMiB: '1024',
@@ -84,7 +84,7 @@ export class CdkStack extends cdk.Stack {
 
     });
 
-    const service = new ecs.FargateService(this, this.get_logical_prodenv_name('service'), {
+    const service = new ecs.FargateService(this, this.get_logical_env_name('service'), {
       cluster: cluster,
       assignPublicIp: false,
       desiredCount: 1,
@@ -93,7 +93,7 @@ export class CdkStack extends cdk.Stack {
 
   }
 
-  get_logical_prodenv_name(resource_type:string):string {
+  get_logical_env_name(resource_type:string):string {
     
     let val = `${config.PROJECT_NAME}-${config.ENVIRONMENT}` 
     if (resource_type) {
