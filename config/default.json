@@ -1,5 +1,5 @@
 {
-    "PROJECT_NAME": "sample-project",
+    "PROJECT_NAME": "ecs-fargate-alb-service-sample",
     "VPC_IP": "10.0.0.0",
     "VPC_CIDR_MASK": 16,
     "SUBNET_CIDR_MASK": 24,
