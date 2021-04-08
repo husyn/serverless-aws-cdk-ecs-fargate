@@ -1,5 +1,5 @@
 # serverless-aws-cdk-iac
-Infrastructure As Code (IaC) using AWS CDK with Typescript to create a complete serverless application
+Infrastructure As Code (IaC) using AWS CDK with Typescript to create a complete serverless application.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
@@ -12,16 +12,24 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
  * `cdk diff`        compare deployed stack with current state
  * `cdk synth`       emits the synthesized CloudFormation template
 
+Use the Config file to manage the dynamic values
 
-## Services to create
+## Resources Included in Stack
 
-- Subnets (3 subnets)
-  - NACL
-  - Security Groups
-
-- Application Load Balancer
-- ECS Cluster
-  - ECS Service
-  - Fargate task
+- VPC
+  - Subnets x 3
+    - Private
+    - Public
 - ECR
-  - ECR LifeCycle Rules
+  - ECR Lifecycle Rules
+- ECS
+  - Task Definition
+  - Service
+- Application Load Balancer
+  - Listner
+
+
+## Services to Create
+
+- Security Groups
+- Fargate task

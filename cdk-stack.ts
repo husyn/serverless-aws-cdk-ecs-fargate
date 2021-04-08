@@ -69,7 +69,7 @@ export class CdkStack extends cdk.Stack {
     const applb = new alb.ApplicationLoadBalancer(this, 'LB', {
       vpc: vpc,
       internetFacing: true,
-      loadBalancerName: this.get_logical_prodenv_name('lb')
+      loadBalancerName: this.get_logical_env_name('lb')
     });
 
     const listener = applb.addListener('Listener', {
@@ -94,10 +94,19 @@ export class CdkStack extends cdk.Stack {
   
     //ECS Cluster
     const ecr_repo = new ecr.Repository(this, config.PROJECT_NAME);
+      repositoryName: this.get_logical_env_name('repo'),
+        lifecycleRules: [
+          {
+            maxImageCount: 10,
+            tagStatus: ecr.TagStatus.ANY,
+            description: 'lifecycle cleanup rule'
+          }
+        ]
+    });
 
-    const cluster = new ecs.Cluster(this, this.get_logical_prodenv_name('cluster'), {
+    const cluster = new ecs.Cluster(this, this.get_logical_env_name('cluster'), {
       vpc: vpc,
-      clusterName: this.get_logical_prodenv_name('cluster')
+      clusterName: this.get_logical_env_name('cluster')
     });
 
     const td = new ecs.TaskDefinition(this, this.get_logical_prodenv_name('taskdefinition'), {
@@ -109,7 +118,7 @@ export class CdkStack extends cdk.Stack {
       image: ecr_repo.repositoryUri
     });
 
-    const service = new ecs.FargateService(this, this.get_logical_prodenv_name('service'), {
+    const service = new ecs.FargateService(this, this.get_logical_env_name('service'), {
       cluster: cluster,
       assignPublicIp: false,
       desiredCount: 1,
@@ -120,9 +129,7 @@ export class CdkStack extends cdk.Stack {
 
   }
 
-  //utility
-
-  get_logical_prodenv_name(resource_type:string):string {
+  get_logical_env_name(resource_type:string):string {
     
     let val = `${config.PROJECT_NAME}-${config.ENVIRONMENT}` 
     if (resource_type) {
